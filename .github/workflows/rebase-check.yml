@@ -1,0 +1,23 @@
+name: Rebase Check
+
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+
+jobs:
+  rebase-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Check for Rebase Commits
+        run: |
+          # Check for rebase commits
+          if git log --pretty=%P -n 1 | grep -q -v ' '; then
+            echo "Error: Rebase commits detected. Please rebase your branch."
+            exit 1
+          fi
