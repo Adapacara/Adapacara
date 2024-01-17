@@ -17,7 +17,7 @@ jobs:
       - name: Check for Rebase Commits
         run: |
           # Check for rebase commits
-          if git log --pretty=oneline | grep 'fixup!'; then
+          if git log --oneline main..`git rev-parse --abbrev-ref HEAD` | grep -q 'fixup!'; then
             echo "Error: Rebase commits detected. Please rebase your branch."
             exit 1
           fi
